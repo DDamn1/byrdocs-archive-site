@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BYR Docs Archive</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23176956'/%3E%3Ctext x='32' y='41' text-anchor='middle' font-size='25' font-family='serif' font-weight='700' fill='white'%3EBYR%3C/text%3E%3C/svg%3E">
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="https://github.com/byrdocs/byrdocs-archive" target="_blank" rel="noreferrer">
+          <span class="brand-mark">BYR</span>
+          <span>
+            <strong>BYR Docs Archive</strong>
+            <small>北京邮电大学资料索引</small>
+          </span>
+        </a>
+        <nav class="top-actions" aria-label="外部链接">
+          <a href="https://github.com/byrdocs/byrdocs-archive" target="_blank" rel="noreferrer">GitHub</a>
+          <a href="https://wiki.byrdocs.org/" target="_blank" rel="noreferrer">Wiki</a>
+        </nav>
+      </header>
+
+      <main>
+        <section class="command-deck" aria-label="检索控制">
+          <div class="query-area">
+            <label class="search-box" for="searchInput">
+              <span>检索</span>
+              <input id="searchInput" type="search" autocomplete="off" placeholder="课程、书名、作者、ISBN、年份">
+            </label>
+            <button class="ghost-button" id="resetButton" type="button">重置</button>
+          </div>
+
+          <div class="filter-row">
+            <div class="segment" id="typeSegment" role="group" aria-label="资料类型">
+              <button class="active" type="button" data-type="all">全部</button>
+              <button type="button" data-type="test">试题</button>
+              <button type="button" data-type="doc">资料</button>
+              <button type="button" data-type="book">书籍</button>
+            </div>
+
+            <label class="select-box">
+              <span>课程</span>
+              <select id="courseFilter">
+                <option value="">全部课程</option>
+              </select>
+            </label>
+
+            <label class="select-box">
+              <span>年份</span>
+              <select id="yearFilter">
+                <option value="">全部年份</option>
+              </select>
+            </label>
+
+            <label class="select-box">
+              <span>排序</span>
+              <select id="sortSelect">
+                <option value="relevance">相关优先</option>
+                <option value="year-desc">年份从新到旧</option>
+                <option value="title">标题 A-Z</option>
+                <option value="type">类型分组</option>
+              </select>
+            </label>
+          </div>
+        </section>
+
+        <section class="overview" aria-label="数据概览">
+          <div class="metric">
+            <span id="totalCount">0</span>
+            <small>总条目</small>
+          </div>
+          <div class="metric">
+            <span id="testCount">0</span>
+            <small>试题</small>
+          </div>
+          <div class="metric">
+            <span id="docCount">0</span>
+            <small>资料</small>
+          </div>
+          <div class="metric">
+            <span id="bookCount">0</span>
+            <small>书籍</small>
+          </div>
+          <div class="source-shot">
+            <img src="./assets/original-interface.png" alt="BYR Docs 原始界面截图">
+          </div>
+        </section>
+
+        <section class="workspace">
+          <aside class="facets" aria-label="快速筛选">
+            <div class="section-label">内容</div>
+            <div class="chip-cloud" id="contentChips"></div>
+            <div class="section-label">学院</div>
+            <div class="chip-cloud" id="collegeChips"></div>
+            <p class="notice">本页面只索引开源元信息；文件链接仍指向原 BYR Docs 地址。项目声明仅面向北邮在校学生提供服务。</p>
+          </aside>
+
+          <section class="results-panel" aria-label="检索结果">
+            <div class="results-head">
+              <div>
+                <strong id="resultCount">0 条结果</strong>
+                <small id="activeFilterText">全部资料</small>
+              </div>
+              <button class="ghost-button compact" id="showMoreButton" type="button">显示更多</button>
+            </div>
+            <div class="result-list" id="resultList"></div>
+          </section>
+
+          <aside class="detail-panel" aria-label="条目详情">
+            <div id="detailView" class="detail-view"></div>
+          </aside>
+        </section>
+      </main>
+    </div>
+
+    <script src="./data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
