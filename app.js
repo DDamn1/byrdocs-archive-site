@@ -150,18 +150,27 @@
       card.innerHTML = `
         <div class="card-head">
           <div>
-            <h2 class="card-title">${escapeHtml(item.title)}</h2>
+            <h2 class="card-title">
+              <a href="${escapeHtml(item.url)}" target="_blank" rel="noreferrer">${escapeHtml(item.title)}</a>
+            </h2>
             <p class="card-subtitle">${escapeHtml(item.subtitle || item.id)}</p>
           </div>
           <span class="type-badge ${escapeHtml(item.type)}">${escapeHtml(item.typeLabel)}</span>
         </div>
         <div class="tag-row">${tagHtml(item.tags)}</div>
+        <div class="card-actions">
+          <a class="card-open" href="${escapeHtml(item.url)}" target="_blank" rel="noreferrer">打开文件</a>
+          <button type="button" class="card-detail">查看详情</button>
+        </div>
       `;
-      card.addEventListener("click", () => selectItem(item.id));
+      card.addEventListener("click", (event) => {
+        if (event.target.closest("a")) return;
+        selectItem(item.id, { scrollDetail: true });
+      });
       card.addEventListener("keydown", (event) => {
         if (event.key === "Enter" || event.key === " ") {
           event.preventDefault();
-          selectItem(item.id);
+          selectItem(item.id, { scrollDetail: true });
         }
       });
       els.resultList.appendChild(card);
@@ -198,7 +207,7 @@
         ${field("格式", item.filetype)}
         ${field("ID", item.id)}
       </dl>
-      <a class="link-button" href="${escapeHtml(item.url)}" target="_blank" rel="noreferrer">打开原始链接</a>
+      <a class="link-button" href="${escapeHtml(item.url)}" target="_blank" rel="noreferrer">打开文件</a>
     `;
   }
 
@@ -225,13 +234,16 @@
     els.sort.value = state.sort;
   }
 
-  function selectItem(id) {
+  function selectItem(id, options = {}) {
     state.selectedId = id;
     const item = items.find((candidate) => candidate.id === id);
     renderDetail(item);
     [...els.resultList.querySelectorAll(".result-card")].forEach((card) => {
       card.classList.toggle("active", card.dataset.id === id);
     });
+    if (options.scrollDetail && window.matchMedia("(max-width: 1120px)").matches) {
+      els.detail.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   }
 
   function render() {
